@@ -14,7 +14,7 @@
     "dev": "next -p $PORT",
     "build": "next build",
     "start": "NODE_ENV=production node server.js",
-    "compile": "next build && next export -o docs",
+    "compile": "rm -rf .next && rm -rf docs && next build && next export -o docs && cd docs && touch .nojekyll",
     "lint": "eslint . --ext .js,.tsx --fix && yarn format",
     "format": "yarn format-scss && yarn format-js",
     "format-scss": "yarn run stylelint **/*.scss --fix --formatter verbose",
