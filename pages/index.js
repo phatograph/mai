@@ -8,7 +8,9 @@ import axios from 'axios'
 const Index = (props) => {
   return (
     <div className='Index'>
-      <h1 className='Index__h1'>Mai</h1>
+      <h1 className='Index__h1'>
+        Anangut<strong>mai</strong>
+      </h1>
     </div>
   )
 }
