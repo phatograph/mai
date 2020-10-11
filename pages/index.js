@@ -14,6 +14,8 @@ import moment from 'moment'
 import epl_fixture_20202021 from '@csvs/epl_fixture_20202021.csv'
 import epl_fixture_records from '@csvs/epl_fixture_records.csv'
 
+const f = format('.3f')
+
 class Index extends React.Component {
   static propTypes = {}
 
@@ -24,8 +26,6 @@ class Index extends React.Component {
   }
 
   componentDidMount = () => {
-    const f = format('.3f')
-
     const team = 'Newcastle Utd'
 
     const fixturesRecords = filter(epl_fixture_records, (x) => {
@@ -206,6 +206,18 @@ class Index extends React.Component {
               </g>
             </g>
           </svg>
+
+          <p>
+            Expected points:{' '}
+            {f(
+              sum(
+                get(this.state, 'fixtures').map((x) =>
+                  Number(get(x, '_pointsAvg'))
+                )
+              )
+            )}{' '}
+            points
+          </p>
 
           <div className='Index__games'>
             {(get(this.state, 'fixtures') || []).map((x, i) => {

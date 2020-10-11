@@ -164,10 +164,16 @@ video {
 }
 
 .Index {
+  padding: calc(var(--global-space) * 2);
+
+  > .container {
+    display: grid;
+    grid-gap: calc(var(--global-space) * 1.5);
+  }
+
   &__games {
     display: grid;
     grid-gap: calc(var(--global-space) * 1);
-    margin-top: calc(var(--global-space) * 2);
   }
 }
 
@@ -175,6 +181,12 @@ video {
   &__axis {
     stroke-width: 1,;
     stroke: #000;
+  }
+
+  &__label {
+    font-size: 14px;
+    dominant-baseline: middle;
+    text-anchor: end;
   }
 
   &__label-x {
