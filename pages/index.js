@@ -24,83 +24,88 @@ const Index = (props) => {
   return (
     <div className='Index'>
       <div className='container'>
-        {fixtures.map((x, i) => {
-          const opponent =
-            get(x, 'home_team') == team
-              ? get(x, 'away_team')
-              : get(x, 'home_team')
+        <div className='Index__games'>
+          {fixtures.map((x, i) => {
+            const [opponent, isAway] =
+              get(x, 'home_team') == team
+                ? [get(x, 'away_team'), false]
+                : [get(x, 'home_team'), true]
 
-          const opponentGames = filter(
-            fixturesRecords,
-            (y) =>
-              get(y, 'home_team') == opponent || get(y, 'away_team') == opponent
-          )
+            const opponentGames = filter(fixturesRecords, (y) =>
+              isAway
+                ? get(y, 'home_team') == opponent
+                : get(y, 'away_team') == opponent
+            )
 
-          const points = opponentGames.map((y, j) => {
-            let score = 0
+            const points = opponentGames.map((y, j) => {
+              let score = 0
 
-            if (
-              get(y, 'home_team') == team &&
-              get(y, 'score_home') > get(y, 'score_away')
-            ) {
-              score = 3
-            } else if (
-              get(y, 'away_team') == team &&
-              get(y, 'score_home') < get(y, 'score_away')
-            ) {
-              score = 3
-            } else if (get(y, 'score_home') == get(y, 'score_away')) {
-              score = 1
-            }
+              if (
+                get(y, 'home_team') == team &&
+                get(y, 'score_home') > get(y, 'score_away')
+              ) {
+                score = 3
+              } else if (
+                get(y, 'away_team') == team &&
+                get(y, 'score_home') < get(y, 'score_away')
+              ) {
+                score = 3
+              } else if (get(y, 'score_home') == get(y, 'score_away')) {
+                score = 1
+              }
 
-            return score
-          })
+              return score
+            })
 
-          return (
-            <div className='Index__game' key={i}>
-              <h2 className='Index__game__h2'>
-                {get(x, 'game_date')}: {get(x, 'home_team')} vs{' '}
-                {get(x, 'away_team')}
-              </h2>
+            return (
+              <div className='Index__game' key={i}>
+                <h2 className='Index__game__h2'>
+                  {get(x, 'game_date')}: {get(x, 'home_team')} vs{' '}
+                  {get(x, 'away_team')}
+                </h2>
 
-              <p>
-                {get(opponentGames, 'length')} games,{' '}
-                {f(sum(points) / get(opponentGames, 'length'))} points
-              </p>
+                <p>
+                  {get(opponentGames, 'length')} games,{' '}
+                  {f(sum(points) / get(opponentGames, 'length'))} points
+                </p>
 
-              {false && (
-                <React.Fragment>
-                  <dl className='Index__game__dl'>
-                    {opponentGames.map((y, j) => {
-                      let score = 0
+                {true && (
+                  <React.Fragment>
+                    <dl className='Index__game__dl'>
+                      {opponentGames.map((y, j) => {
+                        let score = 0
 
-                      if (
-                        get(y, 'home_team') == team &&
-                        get(y, 'score_home') > get(y, 'score_away')
-                      ) {
-                        score = 3
-                      } else if (
-                        get(y, 'away_team') == team &&
-                        get(y, 'score_home') < get(y, 'score_away')
-                      ) {
-                        score = 3
-                      } else if (get(y, 'score_home') == get(y, 'score_away')) {
-                        score = 1
-                      }
+                        if (
+                          get(y, 'home_team') == team &&
+                          get(y, 'score_home') > get(y, 'score_away')
+                        ) {
+                          score = 3
+                        } else if (
+                          get(y, 'away_team') == team &&
+                          get(y, 'score_home') < get(y, 'score_away')
+                        ) {
+                          score = 3
+                        } else if (
+                          get(y, 'score_home') == get(y, 'score_away')
+                        ) {
+                          score = 1
+                        }
 
-                      return (
-                        <div className='Index__game__dl__item' key={j}>
-                          {get(y, 'home_team')} {get(y, 'score_home')} -{' '}
-                          {get(y, 'score_away')} {get(y, 'away_team')} = {score}
-                        </div>
-                      )
-                    })}
-                  </dl>
-                </React.Fragment>
-              )}
-            </div>
-          )
-        })}
+                        return (
+                          <div className='Index__game__dl__item' key={j}>
+                            {get(y, 'home_team')} {get(y, 'score_home')} -{' '}
+                            {get(y, 'score_away')} {get(y, 'away_team')} ={' '}
+                            {score}
+                          </div>
+                        )
+                      })}
+                    </dl>
+                  </React.Fragment>
+                )}
+              </div>
+            )
+          })}
+        </div>
       </div>
     </div>
   )

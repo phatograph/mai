@@ -162,3 +162,10 @@ video {
   margin: 0 auto;
   padding: 0 var(--global-space);
 }
+
+.Index {
+  &__games {
+    display: grid;
+    grid-gap: calc(var(--global-space) * 2);
+  }
+}
