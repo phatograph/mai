@@ -7,6 +7,8 @@ import axios from 'axios'
 import {format} from 'd3-format'
 import {min, max} from 'd3-array'
 import {scaleTime, scaleLinear} from 'd3-scale'
+import {axisLeft} from 'd3-axis'
+import {select} from 'd3-selection'
 import moment from 'moment'
 
 import epl_fixture_20202021 from '@csvs/epl_fixture_20202021.csv'
@@ -114,7 +116,7 @@ class Index extends React.Component {
 
     let lowerBound = 0
     let upperBound = 3
-    const xLinesCount = 5
+    const xLinesCount = 4
 
     if (upperBound - lowerBound < xLinesCount) {
       upperBound = lowerBound + (xLinesCount - 1)
@@ -143,6 +145,45 @@ class Index extends React.Component {
               transform={`translate(${_margin.left}, ${_margin.top})`}
               className='Graph__graph-area'
             >
+              {(() => {
+                const offsetLeft = -25
+
+                return (
+                  <React.Fragment>
+                    <g className='Graph__axis-xs'>
+                      {Array.from(Array(xLinesCount)).map((_, i) => {
+                        const yBound = scaleLinear()
+                          .domain([0, xLinesCount - 1])
+                          .range([lowerBound, upperBound])
+
+                        const yBounded = yBound(i)
+                        const f = format('.5~s')
+
+                        return (
+                          <g key={i}>
+                            <line
+                              className={className('Graph__axis', {})}
+                              x1={-10}
+                              y1={y(yBounded)}
+                              x2={width + 10}
+                              y2={y(yBounded)}
+                            />
+
+                            <text
+                              className='Graph__label'
+                              x={offsetLeft}
+                              y={y(yBounded)}
+                            >
+                              {f(yBounded)}
+                            </text>
+                          </g>
+                        )
+                      })}
+                    </g>
+                  </React.Fragment>
+                )
+              })()}
+
               <g className='Graph__data'>
                 {data.map((d, i) => (
                   <g key={i} className='Graph__datum'>
